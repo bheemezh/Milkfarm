@@ -1,0 +1,2797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milk Farm Monthly Bill Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #9C27B0;
+            --primary-dark-color: #7B1FA2;
+            --secondary-color: #673AB7;
+            --secondary-dark-color: #512DA8;
+            --danger-color: #EF5350;
+            --danger-dark-color: #F44336;
+            --text-color: #333;
+            --light-text-color: #fff;
+            --background-light: #f3e5f5;
+            --background-dark: #e1bee7;
+            --card-background: #ffffff;
+            --border-color: #d8c1e0;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --toast-background: #333;
+            --button-add-bg: var(--primary-dark-color);
+            --button-add-hover: var(--secondary-dark-color);
+            --button-view-bg: var(--secondary-dark-color);
+            --button-view-hover: var(--primary-dark-color);
+            --button-change-price-bg: #FFC107;
+            --button-change-price-hover: #FFA000;
+            --button-delete-bg: var(--danger-color);
+            --button-delete-hover: var(--danger-dark-color);
+            --button-download-bg: #9E9E9E;
+            --button-download-hover: #757575;
+            --button-share-bg: var(--primary-color);
+            --button-share-hover: var(--secondary-color);
+            --button-back-bg: #795548;
+            --button-back-hover: #6D4C41;
+            --alert-success-bg: #E8F5E9;
+            --alert-success-border: #4CAF50;
+            --alert-success-text: #2E7D32;
+            --alert-danger-bg: #FFEBEE;
+            --alert-danger-border: #F44336;
+            --alert-danger-text: #D32F2F;
+            --alert-info-bg: #FFFDE7;
+            --alert-info-border: #FFC107;
+            --alert-info-text: #FF8F00;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-light);
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            font-size: 0.95em;
+            color: var(--text-color);
+            box-shadow: 0 8px 25px var(--shadow-color);
+            border-radius: 15px;
+            overflow-x: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            color: var(--primary-dark-color);
+            margin-bottom: 25px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 1em;
+            box-sizing: border-box;
+            background-color: var(--card-background);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.2);
+            outline: none;
+        }
+
+        button {
+            padding: 12px 20px;
+            cursor: pointer;
+            color: var(--light-text-color);
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px var(--shadow-color);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        button i {
+            color: inherit;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .button-add {
+            background-color: var(--button-add-bg);
+        }
+        .button-add:hover {
+            background-color: var(--button-add-hover);
+        }
+
+        .button-view {
+            background-color: var(--button-view-bg);
+        }
+        .button-view:hover {
+            background-color: var(--button-view-hover);
+        }
+
+        .button-change-price {
+            background-color: #03a9f4;
+        }
+        .button-change-price:hover {
+            background-color: #0288d1;
+        }
+        
+        .button-download-image {
+            background-color: #009688;
+        }
+        .button-download-image:hover {
+            background-color: #00796b;
+        }
+
+        .button-delete {
+            background-color: var(--danger-color);
+        }
+        .button-delete:hover {
+            background-color: var(--danger-dark-color);
+        }
+
+        .button-save-bill { 
+            background-color: var(--button-download-bg);
+        }
+        .button-save-bill:hover {
+            background-color: var(--button-download-hover);
+        }
+
+        .button-share {
+            background-color: var(--primary-color);
+            background-image: linear-gradient(45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        .button-share:hover {
+            background-color: var(--secondary-color);
+            background-image: linear-gradient(45deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            box-shadow: 0 8px 20px rgba(123, 31, 162, 0.4);
+        }
+
+        .button-back {
+            background-color: var(--button-back-bg);
+            margin-top: 30px;
+            width: 100%;
+        }
+        .button-back:hover {
+            background-color: var(--button-back-hover);
+        }
+        
+        .button-recover {
+            background-color: #4CAF50;
+        }
+        .button-recover:hover {
+            background-color: #4CAF50;
+        }
+
+        .button-group-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        #inputForm .button-group-row {
+            justify-content: flex-start;
+            padding-left: 0;
+            margin-left: -5px;
+        }
+
+        .button-group-row button {
+            flex-basis: 0;
+            flex-grow: 1;
+            max-width: 200px;
+            min-width: 160px;
+            margin-top: 0;
+        }
+        
+        .button-group-row.move-right {
+            justify-content: flex-end;
+        }
+        
+        .button-group-row.center-buttons {
+            justify-content: center;
+            margin: 30px auto;
+            max-width: 800px;
+        }
+
+        #actionButtons button {
+            padding: 8px 15px;
+            font-size: 0.85em;
+            min-width: unset;
+            max-width: 180px;
+        }
+        #actionButtons button i {
+            font-size: 1em;
+        }
+
+        .monthly-bill .button-delete {
+            padding: 6px 12px;
+            font-size: 0.75em;
+            margin-top: 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transform: none;
+            border-radius: 6px;
+        }
+        .monthly-bill .button-delete:hover {
+            transform: none;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        }
+        .monthly-bill .button-delete i {
+            font-size: 0.9em;
+        }
+
+
+        .customer-records, .bill-container {
+            margin-top: 30px;
+            padding: 25px;
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            display: none;
+        }
+        
+        .bill-container {
+            transform: scale(1.05);
+            margin-bottom: 40px;
+        }
+
+        #billImageContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(240, 240, 240, 0.95);
+            z-index: 999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+            box-shadow: none;
+            border-radius: 0;
+            overflow: auto;
+        }
+
+        #billImageContainer img {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+        #billImageContainer img:hover {
+            transform: scale(1.01);
+        }
+
+
+        .customer-records p, .monthly-bill {
+            padding: 12px 18px;
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .customer-records p:hover, .monthly-bill:hover {
+            background-color: var(--background-light);
+            transform: translateX(5px);
+        }
+
+        .monthly-bill-text {
+            color: var(--secondary-dark-color);
+            font-weight: 500;
+        }
+
+        .bill-container h3 {
+            color: var(--primary-dark-color);
+            margin-bottom: 20px;
+        }
+
+        /* Calendar Styles */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px; /* Smaller gap */
+            margin-top: 15px;
+            border: 1px solid #ddd; 
+            border-radius: 8px;
+            padding: 5px; /* Smaller padding */
+            background-color: #fdfdfd;
+            box-sizing: border-box;
+            margin-left: 0; /* Align to the left */
+        }
+        
+        .calendar-day {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            padding: 6px; /* Smaller padding */
+            min-height: 60px; /* Slightly smaller height */
+            font-size: 0.85em; /* Smaller font size */
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: 500;
+            box-sizing: border-box;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            position: relative;
+        }
+        .calendar-day:hover {
+            transform: scale(1.02);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+        
+        .calendar-header-day {
+            font-weight: 700;
+            color: #424242;
+            background-color: #f5f5f5;
+            padding: 6px 0; /* Smaller padding */
+            border-bottom: 2px solid #bdbdbd;
+            border-radius: 8px 8px 0 0;
+            font-size: 0.9em; /* Smaller font size */
+            text-transform: uppercase;
+            cursor: default;
+        }
+        
+        .calendar-day-amount {
+            font-size: 0.75em; /* Smaller font size */
+            display: block;
+            margin-top: 5px;
+            color: #616161;
+            font-weight: 400;
+            line-height: 1.2;
+            white-space: normal;
+        }
+
+        .calendar-day.has-milk {
+            border: 2px solid #4CAF50;
+            background-color: #E8F5E9;
+        }
+
+        .calendar-day.no-milk {
+            border: 2px solid #EF5350;
+            background-color: #FFEBEE;
+        }
+        
+        .calendar-day.selected {
+            background-color: #A9D1E6;
+            border-color: #0288d1;
+            transform: scale(1.05);
+        }
+
+        .toast {
+            visibility: hidden;
+            min-width: 280px;
+            background-color: rgba(51, 51, 51, 0.8);
+            color: var(--light-text-color);
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 30px;
+            font-size: 1em;
+            opacity: 0;
+            transition: opacity 0.5s, bottom 0.5s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+        }
+
+        .toast.show {
+            visibility: visible;
+            bottom: 50px;
+            opacity: 1;
+        }
+
+        /* NEW: Grayed-out overlay for all modals */
+        .custom-alert-overlay, .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-overlay {
+            align-items: flex-end;
+            z-index: 1002;
+        }
+
+        .custom-alert-overlay.show, .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-alert {
+            background-color: var(--card-background);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 1002;
+        }
+
+        .custom-alert-overlay.show .custom-alert {
+            transform: translateY(0);
+        }
+
+        .custom-alert h4 {
+            margin-top: 0;
+            color: var(--danger-dark-color);
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .custom-alert p {
+            font-size: 1.1em;
+            color: var(--text-color);
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .custom-alert.red h4, .custom-alert.red p {
+            color: var(--danger-dark-color);
+        }
+
+        .custom-alert.red .confirm-button {
+             background-color: var(--danger-dark-color);
+        }
+
+        .custom-alert-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .custom-alert-buttons button {
+            flex-grow: 1;
+            max-width: 150px;
+            margin-top: 0;
+            font-size: 0.9em;
+            padding: 10px 15px;
+            box-shadow: none;
+        }
+        .custom-alert-buttons button:hover {
+            transform: none;
+        }
+
+        .custom-alert-buttons .confirm-button {
+            background-color: var(--danger-color);
+        }
+        .custom-alert-buttons .confirm-button:hover {
+            background-color: var(--danger-dark-color);
+        }
+
+        .custom-alert-buttons .cancel-button {
+            background-color: var(--button-download-bg);
+        }
+        .custom-alert-buttons .cancel-button:hover {
+            background-color: var(--button-download-hover);
+        }
+
+
+        #quantityInputContainer, #dueLastMonthContainer, #pricePerLitreContainer {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        #pricePerLitreContainer {
+             display: none;
+        }
+
+        #dueLastMonthContainer p {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--primary-dark-color);
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        #dueLastMonthContainer label {
+             margin-bottom: 5px;
+             font-size: 0.9em;
+        }
+        
+        .autocomplete-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .autocomplete-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid var(--border-color);
+            border-top: none;
+            z-index: 99;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: var(--card-background);
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .autocomplete-items div {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            font-size: 1em;
+            color: var(--text-color);
+            transition: background-color 0.2s;
+        }
+
+        .autocomplete-items div:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-items div:hover {
+            background-color: var(--background-dark);
+        }
+
+        .autocomplete-active {
+            background-color: var(--primary-color) !important;
+            color: var(--light-text-color) !important;
+        }
+
+        /* NEW: Horizontal bar for home screen buttons */
+        #homeScreenButtons {
+            display: flex;
+            justify-content: space-around;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 30px;
+            box-shadow: 0 4px 10px var(--shadow-color);
+        }
+        
+        .bar-button {
+            background-color: transparent;
+            border: none;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.8em;
+            font-weight: 500;
+            cursor: pointer;
+            color: #555;
+            transition: color 0.3s ease, transform 0.2s ease;
+            box-shadow: none;
+            text-transform: capitalize;
+            gap: 5px;
+        }
+        .bar-button:hover {
+            color: var(--primary-dark-color);
+            transform: translateY(-2px);
+        }
+        .bar-button i {
+            font-size: 1.5em;
+            margin-bottom: 0;
+            color: inherit;
+        }
+
+        /* Specific colors for each button */
+        .bar-button.quick-add { color: #FFC107; }
+        .bar-button.price { color: #03a9f4; }
+        .bar-button.search { color: #4CAF50; }
+        .bar-button.recover { color: #F44336; }
+
+        /* Pop-up for Save Bill */
+        .save-bill-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1002;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .save-bill-modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .save-bill-modal {
+            background-color: var(--card-background);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            max-width: 350px;
+            width: 90%;
+            text-align: center;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .save-bill-modal-overlay.show .save-bill-modal {
+            transform: translateY(0);
+        }
+
+        .save-bill-modal h4 {
+            color: var(--primary-dark-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .save-bill-modal .format-buttons {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin-bottom: 0;
+        }
+        
+        .save-bill-modal .format-buttons button {
+            flex-grow: 1;
+            padding: 10px 15px;
+            font-size: 0.85em;
+            margin-top: 0;
+        }
+        
+        .save-bill-modal .format-buttons button:hover {
+             transform: translateY(-2px);
+        }
+        
+        .button-download-json {
+            background-color: #3f51b5;
+        }
+        .button-download-json:hover {
+            background-color: #303f9f;
+        }
+
+        /* NEW: Pop-up Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 1002;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 500px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+            box-sizing: border-box;
+            max-height: 90%;
+            overflow-y: auto;
+        }
+        
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-content h4 {
+            margin-top: 0;
+            text-align: center;
+            color: var(--primary-dark-color);
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .modal-buttons button {
+            flex-grow: 1;
+            margin-top: 0;
+            box-shadow: none;
+            text-transform: capitalize;
+        }
+        
+        .modal-buttons .confirm { background-color: var(--primary-dark-color); }
+        .modal-buttons .confirm:hover { background-color: var(--secondary-dark-color); }
+        .modal-buttons .cancel { background-color: var(--button-back-bg); }
+        .modal-buttons .cancel:hover { background-color: var(--button-back-hover); }
+        
+        /* Specific modal styles */
+        .modal-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9em;
+        }
+        .modal-list-item:last-child {
+            border-bottom: none;
+        }
+        .modal-list-item-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .modal-list-item-buttons button {
+            padding: 5px 10px;
+            font-size: 0.8em;
+            box-shadow: none;
+            margin: 0;
+        }
+        .modal-list-item-buttons .recover-button {
+            background-color: #4CAF50;
+        }
+        .modal-list-item-buttons .recover-button:hover {
+            background-color: #388E3C;
+        }
+        .modal-list-item-buttons .delete-perm-button {
+            background-color: var(--danger-color);
+        }
+        .modal-list-item-buttons .delete-perm-button:hover {
+            background-color: var(--danger-dark-color);
+        }
+
+        /* Customer Selector Modal specific styles */
+        #customerListForSelector {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 5px;
+            margin-top: 15px;
+        }
+        #customerListForSelector .customer-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 1em;
+        }
+        #customerListForSelector .customer-item:last-child {
+            border-bottom: none;
+        }
+        #customerListForSelector .customer-item:hover {
+            background-color: var(--background-light);
+        }
+        #customerListForSelector .customer-item.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        #customerSelectorModal .quantity-options {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        #quantityInputForSelector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        #quantityInputForSelector input {
+            flex-grow: 1;
+            margin-bottom: 0;
+        }
+
+        #customerSelectorModal .quantity-option-button {
+            background-color: #eee;
+            color: #333;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+        #customerSelectorModal .quantity-option-button.selected {
+            background-color: var(--primary-dark-color);
+            color: white;
+            border-color: var(--primary-dark-color);
+        }
+        
+        #customerSelectorModal .add-button {
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        #customerSelectorModal .search-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        
+        /* NEW: Calendar specific styles */
+        #calendarContainer {
+            margin-top: 10px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #f9f9f9;
+            box-sizing: border-box; /* Crucial for ensuring padding and border are included in width */
+            /* Adjusted for left alignment and slight reduction in width */
+            max-width: 95%; 
+            margin-right: auto;
+            margin-left: 0; 
+        }
+        #calendarHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        #calendarHeader button {
+            background: none;
+            color: var(--primary-dark-color);
+            padding: 5px;
+            font-size: 1.2em;
+            box-shadow: none;
+            margin: 0;
+        }
+        #calendarHeader h4 {
+            margin: 0;
+            font-size: 1.1em;
+        }
+        
+        #dateSelectionButtons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        #dateSelectionButtons button {
+            flex-grow: 1;
+            background-color: #4CAF50;
+            padding: 8px;
+        }
+        
+        #dateSelectionButtons .deselect-all {
+            background-color: var(--danger-color);
+        }
+
+        #monthYearSelector {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        #monthSelector, #yearSelector {
+            padding: 8px;
+            font-size: 0.9em;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+        
+        #multiCustomerAddModal .date-range-inputs {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        #multiCustomerAddModal .date-range-inputs input {
+             flex-grow: 1;
+             margin: 0;
+        }
+        
+        #multiCustomerListContainer {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        
+        .multi-customer-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 1em;
+        }
+        .multi-customer-item:last-child {
+            border-bottom: none;
+        }
+        .multi-customer-item:hover {
+            background-color: var(--background-light);
+        }
+        .multi-customer-item.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        #recoverableItemsList {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        /* New horizontal quantity options */
+        #multiCustomerAddModal .quantity-options {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        #multiCustomerAddModal .quantity-option-button {
+            background-color: #eee;
+            color: #333;
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            flex: 1;
+            min-width: 60px;
+            text-align: center;
+        }
+        #multiCustomerAddModal .quantity-option-button.selected {
+            background-color: var(--primary-dark-color);
+            color: white;
+            border-color: var(--primary-dark-color);
+        }
+        #multiCustomerAddModal .add-button {
+            width: 100%;
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            #homeScreenButtons {
+                 justify-content: space-between;
+                 gap: 8px;
+            }
+            .bar-button {
+                width: 75px;
+                height: auto;
+                font-size: 0.65em;
+            }
+            .bar-button i {
+                font-size: 1.6em;
+            }
+
+            #actionButtons {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            #actionButtons button {
+                padding: 8px 12px;
+                font-size: 0.75em;
+            }
+            
+            .modal-content {
+                width: 90%;
+            }
+
+            .calendar-grid {
+                gap: 3px; /* Even smaller gap on small screens */
+                padding: 3px; /* Even smaller padding on small screens */
+                margin-top: 8px;
+            }
+            .calendar-day {
+                min-height: 45px; /* Further reduced height */
+                font-size: 0.7em; /* Further reduced font size */
+                padding: 3px; /* Further reduced padding */
+            }
+            .calendar-day-amount {
+                font-size: 0.6em; /* Further reduced font size */
+            }
+
+            .toast {
+                min-width: 200px;
+                left: 10px;
+                right: 10px;
+                transform: translateX(0);
+                margin-left: 0;
+            }
+            
+            #quantityInputForSelector {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            #quantityInputForSelector input {
+                width: 100%;
+            }
+            
+            .bill-container {
+                padding: 15px;
+            }
+            
+            #billContent h3 {
+                font-size: 1.2em;
+                margin-bottom: 10px;
+            }
+            
+            #calendarContainer {
+                max-width: 100%; /* Adjust for full width on small screens if desired */
+                margin-left: auto; /* Re-center for small screens, or keep 0 for left align */
+                margin-right: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="mainHeader">Milk Farm Monthly Bill Calculator</h1>
+
+    <div id="inputForm">
+        <label for="customer">Customer Name:</label>
+        <div class="autocomplete-container">
+            <div class="autocomplete-input-wrapper">
+                <input type="text" id="customer" required autocomplete="off" placeholder="Enter customer name">
+            </div>
+        </div>
+
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" required>
+
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" required>
+
+        <label for="unit">Select Unit:</label>
+        <select id="unit" onchange="toggleQuantityInput()">
+            <option value="500ml">500 ml</option>
+            <option value="litre">1 litre</option>
+            <option value="250ml">250 ml</option>
+            <option value="750ml">750 ml</option>
+            <option value="0ml">0 ml</option>
+        </select>
+
+        <div id="quantityInputContainer" style="display: none;">
+            <label for="quantity">Quantity (Litres):</label>
+            <input type="number" id="quantity" value="1" min="0.01" step="0.01">
+        </div>
+
+        <div id="pricePerLitreContainer">
+            <label for="pricePerLitreInput">Price Per Litre:</label>
+            <input type="number" id="pricePerLitreInput" value="80" min="0.01" step="0.01" onchange="updatePricePerLitre()">
+        </div>
+
+        <div class="button-group-row">
+            <button class="button-add" onclick="addRecord()"><i class="fas fa-plus-circle"></i> Add Record</button>
+            <button class="button-view" onclick="showCustomerList()"><i class="fas fa-users"></i> View Customers</button>
+        </div>
+    </div>
+    
+    <div id="homeScreenButtons">
+        <button class="bar-button quick-add" onclick="showMultiCustomerAddModal()">
+            <i class="fas fa-plus-square"></i> Quick Add
+        </button>
+        <button class="bar-button price" onclick="showModal('priceChangeModal')">
+            <i class="fas fa-tags"></i> Change Price
+        </button>
+        <button class="bar-button search" onclick="showModal('customerSelectorModal')">
+            <i class="fas fa-search"></i> Search/Add
+        </button>
+        <button class="bar-button recover" onclick="showRecoverDeletedModal()">
+            <i class="fas fa-trash-restore"></i> Recover
+        </button>
+    </div>
+
+    <div class="customer-records" id="customerRecords"></div>
+
+    <div id="billContainer" class="bill-container">
+        <div id="billContent"></div>
+        <div id="dueLastMonthContainer">
+            <label for="dueLastMonth">Due from Last Month:</label>
+            <input type="number" id="dueLastMonth" value="0" min="0" step="0.01" onchange="updateTotalBill()">
+            <p><strong>Total Amount Payable: ₹<span id="totalAmountPayable">0.00</span></strong></p>
+        </div>
+    </div>
+
+    <div id="billImageContainer"></div>
+
+    <div id="actionButtons" class="button-group-row center-buttons">
+        <button class="button-save-bill" id="saveBillButton" onclick="showSaveBillModal()"><i class="fas fa-save"></i> Save Bill</button> 
+        <button class="button-share" id="shareButton" onclick="shareBill()"><i class="fas fa-share-alt"></i> Share Bill</button>
+        <button class="button-delete" id="deleteButton" onclick="confirmDeleteCurrentMonth()"><i class="fas fa-trash-alt"></i> Delete Month</button>
+        <button class="button-view" id="viewImageButton" onclick="viewBillImage()"><i class="fas fa-image"></i> View Image</button>
+    </div>
+
+    <button class="button-back" id="backButton" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+
+    <div id="toast" class="toast"></div>
+
+    <div id="customAlertOverlay" class="custom-alert-overlay">
+        <div class="custom-alert">
+            <h4 id="customAlertTitle"></h4>
+            <p id="customAlertMessage"></p>
+            <div class="custom-alert-buttons">
+                <button class="confirm-button" id="customAlertConfirm">Yes, Delete</button>
+                <button class="cancel-button" id="customAlertCancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="saveBillModalOverlay" class="save-bill-modal-overlay">
+        <div class="save-bill-modal">
+            <h4><i class="fas fa-save"></i> Save Bill</h4>
+            <p>Choose a format to save the bill:</p>
+            <div class="format-buttons">
+                <button class="button-download-image" onclick="saveFile('image')"><i class="fas fa-image"></i> Image (PNG)</button>
+                <button class="button-download-json" onclick="saveFile('json')"><i class="fas fa-file-code"></i> JSON</button>
+                <button class="button-change-price" onclick="saveFile('csv')"><i class="fas fa-file-csv"></i> CSV</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="priceChangeModalOverlay" class="modal-overlay">
+        <div id="priceChangeModal" class="modal-content">
+            <h4><i class="fas fa-tags"></i> Change Price Per Litre</h4>
+            <input type="number" id="modalPriceInput" value="80" min="0.01" step="0.01" placeholder="Enter new price">
+            <div class="modal-buttons">
+                <button class="confirm" onclick="updatePriceFromModal()"><i class="fas fa-sync-alt"></i> Update</button>
+                <button class="cancel" onclick="hideModal('priceChangeModal')"><i class="fas fa-times-circle"></i> Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="customerSelectorModalOverlay" class="modal-overlay">
+        <div id="customerSelectorModal" class="modal-content">
+            <h4 id="customerSelectorTitle"><i class="fas fa-search"></i> Search Customer & Add</h4>
+            <input type="text" id="selectorSearch" class="search-input" placeholder="Search for customer...">
+            <div id="customerListForSelector"></div>
+            
+            <div id="calendarContainer" style="display: none;">
+                <div id="calendarHeader">
+                    <button onclick="changeCalendarMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+                    <div id="monthYearSelector">
+                        <select id="monthSelector"></select>
+                        <select id="yearSelector"></select>
+                    </div>
+                    <button onclick="changeCalendarMonth(1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div id="calendarGrid" class="calendar-grid"></div>
+                <div id="dateSelectionButtons" class="button-group-row">
+                    <button onclick="selectAllDates()"><i class="fas fa-check-double"></i> Select All</button>
+                    <button class="deselect-all" onclick="deselectAllDates()"><i class="fas fa-times-circle"></i> Deselect All</button>
+                </div>
+            </div>
+
+            <div class="quantity-options">
+                <button class="quantity-option-button selected" data-unit="500ml">500 ml</button>
+                <button class="quantity-option-button" data-unit="litre">1 Litre</button>
+                <button class="quantity-option-button" data-unit="250ml">250 ml</button>
+                <button class="quantity-option-button" data-unit="750ml">750 ml</button>
+                <button class="quantity-option-button" data-unit="0ml">0 ml</button>
+            </div>
+            
+            <div id="quantityInputForSelector" style="display: none;">
+                <label for="selectorQuantityInput">Enter Litres:</label>
+                <input type="number" id="selectorQuantityInput" value="1" min="0.01" step="0.01">
+            </div>
+
+            <button class="button-add add-button" onclick="addRecordFromSelector()"><i class="fas fa-plus-circle"></i> Add Record</button>
+            
+        </div>
+    </div>
+    
+    <div id="multiCustomerAddModalOverlay" class="modal-overlay">
+        <div id="multiCustomerAddModal" class="modal-content">
+            <h4 style="color: #673AB7;"><i class="fas fa-plus-square"></i> Quick Add Bills</h4>
+            <div id="multiCustomerListContainer"></div>
+            <div class="modal-buttons">
+                <button class="confirm" onclick="toggleAllCustomers(true)"><i class="fas fa-check-double"></i> Select All</button>
+                <button class="cancel" onclick="toggleAllCustomers(false)"><i class="fas fa-times-circle"></i> Deselect All</button>
+            </div>
+            
+            <label for="quickAddStartDate">Start Date:</label>
+            <input type="date" id="quickAddStartDate">
+            <label for="quickAddEndDate">End Date:</label>
+            <input type="date" id="quickAddEndDate">
+
+            <div class="quantity-options">
+                <button class="quantity-option-button selected" data-unit="500ml">500 ml</button>
+                <button class="quantity-option-button" data-unit="litre">1 Litre</button>
+                <button class="quantity-option-button" data-unit="250ml">250 ml</button>
+                <button class="quantity-option-button" data-unit="750ml">750 ml</button>
+                <button class="quantity-option-button" data-unit="0ml">0 ml</button>
+            </div>
+            
+            <div id="quantityInputForMultiAdd" style="display: none;">
+                <label for="multiAddQuantityInput">Enter Litres:</label>
+                <input type="number" id="multiAddQuantityInput" value="1" min="0.01" step="0.01">
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="confirm" onclick="addMultiCustomerBills()"><i class="fas fa-plus-circle"></i> Add Bills</button>
+                <button class="cancel" onclick="hideModal('multiCustomerAddModal')"><i class="fas fa-times-circle"></i> Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="recoverDeletedModalOverlay" class="modal-overlay">
+        <div id="recoverDeletedModal" class="modal-content">
+            <h4 style="color: #F44336;"><i class="fas fa-trash-restore"></i> Recover Deleted Bills</h4>
+            <p style="text-align: center; color: #777;">Items are stored for 30 days.</p>
+            <div id="recoverableItemsList"></div>
+            <div class="modal-buttons">
+                <button class="confirm" onclick="recoverAllDeletedItems()"><i class="fas fa-sync-alt"></i> Recover All</button>
+                <button class="cancel" onclick="confirmClearRecoverable()"><i class="fas fa-trash-alt"></i> Delete All</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteConfirmOverlay" class="custom-alert-overlay">
+        <div class="custom-alert red">
+            <h4><i class="fas fa-exclamation-triangle"></i> Permanent Deletion</h4>
+            <p>Are you sure you want to permanently delete all recoverable items? This action cannot be undone.</p>
+            <div class="custom-alert-buttons">
+                <button class="confirm-button" onclick="clearRecoverable()">Yes, Delete Permanently</button>
+                <button class="cancel-button" onclick="document.getElementById('deleteConfirmOverlay').classList.remove('show');">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        let pricePerLitre = parseFloat(localStorage.getItem('milkPricePerLitre')) || 80;
+        document.getElementById('pricePerLitreInput').value = pricePerLitre;
+
+        const records = JSON.parse(localStorage.getItem('milkFarmRecords')) || {};
+        let deletedRecords = JSON.parse(localStorage.getItem('milkFarmDeletedRecords')) || {};
+
+        let currentView = 'home';
+        let previousView = '';
+        let currentCustomer = '';
+        let currentMonthYear = '';
+        let selectedCustomerForAdd = null;
+        let selectedUnitForAdd = '500ml';
+        let selectedDates = new Set();
+        let currentCalendarDate = new Date();
+        let isDragging = false;
+        let dragStartDay = null;
+
+        function toYYYYMMDD(date) {
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        
+        function toDDMMYYYY(dateString) {
+             const [year, month, day] = dateString.split('-');
+             return `${day}/${month}/${year}`;
+        }
+        
+        function toDDMMYYYYFromTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        function showToast(message, duration = 3000) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.className = "toast show";
+            setTimeout(() => {
+                toast.className = toast.className.replace("show", "");
+            }, duration);
+        }
+
+        function showCustomAlert(title, message, onConfirm) {
+            const overlay = document.getElementById('customAlertOverlay');
+            document.getElementById('customAlertTitle').innerText = title;
+            document.getElementById('customAlertMessage').innerText = message;
+
+            const confirmButton = document.getElementById('customAlertConfirm');
+            const cancelButton = document.getElementById('customAlertCancel');
+
+            confirmButton.onclick = () => {
+                overlay.classList.remove('show');
+                onConfirm(true);
+            };
+
+            cancelButton.onclick = () => {
+                overlay.classList.remove('show');
+                onConfirm(false);
+            };
+
+            overlay.classList.add('show');
+        }
+        
+        function confirmClearRecoverable() {
+             hideModal('recoverDeletedModal');
+             document.getElementById('deleteConfirmOverlay').classList.add('show');
+        }
+
+        function hideAllBillElements() {
+            document.getElementById('billContainer').style.display = 'none';
+            document.getElementById('actionButtons').style.display = 'none';
+            document.getElementById('dueLastMonthContainer').style.display = 'none';
+            document.getElementById('billImageContainer').style.display = 'none';
+            document.getElementById('mainHeader').style.display = 'block';
+            document.getElementById('homeScreenButtons').style.display = 'none';
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId + 'Overlay').classList.add('show');
+            if (modalId === 'priceChangeModal') {
+                document.getElementById('modalPriceInput').value = pricePerLitre;
+            } else if (modalId === 'customerSelectorModal') {
+                generateCustomerListForSelector();
+                renderCalendar();
+            }
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId + 'Overlay').classList.remove('show');
+            if (modalId === 'customerSelectorModal') {
+                 selectedDates.clear();
+                 selectedCustomerForAdd = null;
+                 document.getElementById('selectorSearch').value = '';
+                 document.getElementById('customerListForSelector').innerHTML = '';
+                 document.getElementById('customerSelectorTitle').innerText = 'Select Customer & Dates';
+                 document.getElementById('calendarContainer').style.display = 'none';
+                 document.getElementById('customerListForSelector').style.display = 'block';
+                 document.getElementById('selectorSearch').style.display = 'block';
+            }
+        }
+
+        document.getElementById('priceChangeModalOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'priceChangeModalOverlay') {
+                hideModal('priceChangeModal');
+            }
+        });
+
+        document.getElementById('customerSelectorModalOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'customerSelectorModalOverlay') {
+                hideModal('customerSelectorModal');
+            }
+        });
+        
+        document.getElementById('multiCustomerAddModalOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'multiCustomerAddModalOverlay') {
+                hideModal('multiCustomerAddModal');
+            }
+        });
+        
+        document.getElementById('recoverDeletedModalOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'recoverDeletedModalOverlay') {
+                hideModal('recoverDeletedModal');
+            }
+        });
+
+        function updatePriceFromModal() {
+            const newPrice = parseFloat(document.getElementById('modalPriceInput').value);
+            if (!isNaN(newPrice) && newPrice > 0) {
+                pricePerLitre = newPrice;
+                localStorage.setItem('milkPricePerLitre', pricePerLitre);
+                showToast(`Price per litre updated to ₹${pricePerLitre.toFixed(2)}`);
+                hideModal('priceChangeModal');
+            } else {
+                showToast('Please enter a valid price per litre.');
+            }
+        }
+        
+        function generateCustomerListForSelector() {
+            const customerListDiv = document.getElementById('customerListForSelector');
+            customerListDiv.innerHTML = '';
+            
+            const customerNames = Object.keys(records).sort();
+            const searchTerm = document.getElementById('selectorSearch').value.toLowerCase();
+            
+            const filteredCustomers = customerNames.filter(name => name.toLowerCase().includes(searchTerm));
+            
+            if (filteredCustomers.length === 0) {
+                customerListDiv.innerHTML = `<p style="text-align: center; color: #777; padding: 20px;">No customers found.</p>`;
+            }
+
+            filteredCustomers.forEach(customer => {
+                const item = document.createElement('div');
+                item.className = 'customer-item';
+                item.innerText = customer;
+                item.addEventListener('click', () => {
+                    const allItems = customerListDiv.querySelectorAll('.customer-item');
+                    allItems.forEach(i => i.classList.remove('selected'));
+                    item.classList.add('selected');
+                    selectedCustomerForAdd = customer;
+                    document.getElementById('customerSelectorTitle').innerText = `Add Record for ${customer}`;
+                    document.getElementById('calendarContainer').style.display = 'block';
+                    document.getElementById('customerListForSelector').style.display = 'none';
+                    document.getElementById('selectorSearch').style.display = 'none';
+                    document.querySelector('#customerSelectorModal .modal-content').scrollTop = 0;
+                });
+                customerListDiv.appendChild(item);
+            });
+        }
+        
+        document.getElementById('selectorSearch').addEventListener('input', generateCustomerListForSelector);
+
+        document.querySelectorAll('#customerSelectorModal .quantity-option-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                document.querySelectorAll('#customerSelectorModal .quantity-option-button').forEach(btn => btn.classList.remove('selected'));
+                e.target.classList.add('selected');
+                selectedUnitForAdd = e.target.getAttribute('data-unit');
+                if (selectedUnitForAdd === 'litre') {
+                    document.getElementById('quantityInputForSelector').style.display = 'flex';
+                } else {
+                    document.getElementById('quantityInputForSelector').style.display = 'none';
+                }
+            });
+        });
+
+        function getUnitQuantity(unit, quantityInputId) {
+            switch (unit) {
+                case "litre": 
+                    const customQuantity = parseFloat(document.getElementById(quantityInputId).value);
+                    return isNaN(customQuantity) || customQuantity < 0 ? 0 : customQuantity;
+                case "500ml": return 0.5;
+                case "250ml": return 0.25;
+                case "750ml": return 0.75;
+                case "0ml": return 0;
+                default: return 0;
+            }
+        }
+
+        function addRecordFromSelector() {
+            if (!selectedCustomerForAdd) {
+                showToast('Please select a customer first!');
+                return;
+            }
+            if (selectedDates.size === 0) {
+                 showToast('Please select at least one date!');
+                 return;
+            }
+            
+            const quantityInLitres = getUnitQuantity(selectedUnitForAdd, 'selectorQuantityInput');
+
+            if (!records[selectedCustomerForAdd]) {
+                 records[selectedCustomerForAdd] = {};
+            }
+            
+            let recordsAdded = 0;
+            selectedDates.forEach(dateString => {
+                records[selectedCustomerForAdd][dateString] = quantityInLitres;
+                recordsAdded++;
+            });
+            
+            localStorage.setItem('milkFarmRecords', JSON.stringify(records));
+            showToast(`${recordsAdded} record(s) added for ${selectedCustomerForAdd}!`);
+            
+            hideModal('customerSelectorModal');
+            
+            document.getElementById('customerSelectorTitle').innerText = 'Select Customer & Dates';
+            document.getElementById('calendarContainer').style.display = 'none';
+            document.getElementById('customerListForSelector').style.display = 'block';
+            document.getElementById('selectorSearch').style.display = 'block';
+        }
+
+        // --- Calendar Functions ---
+        function populateMonthYearSelectors() {
+            const monthSelect = document.getElementById('monthSelector');
+            const yearSelect = document.getElementById('yearSelector');
+            
+            monthSelect.innerHTML = '';
+            yearSelect.innerHTML = '';
+
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            
+            for (let i = 0; i < 12; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.text = new Date(currentYear, i).toLocaleString('default', { month: 'long' });
+                monthSelect.appendChild(option);
+            }
+
+            for (let i = currentYear - 5; i <= currentYear + 5; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.text = i;
+                yearSelect.appendChild(option);
+            }
+
+            monthSelect.value = currentCalendarDate.getMonth();
+            yearSelect.value = currentCalendarDate.getFullYear();
+
+            monthSelect.addEventListener('change', (e) => {
+                currentCalendarDate.setMonth(parseInt(e.target.value));
+                renderCalendar();
+            });
+            
+            yearSelect.addEventListener('change', (e) => {
+                currentCalendarDate.setFullYear(parseInt(e.target.value));
+                renderCalendar();
+            });
+        }
+
+        function renderCalendar() {
+            const calendarGrid = document.getElementById('calendarGrid');
+            calendarGrid.innerHTML = '';
+            
+            const month = currentCalendarDate.getMonth();
+            const year = currentCalendarDate.getFullYear();
+            
+            document.getElementById('monthSelector').value = month;
+            document.getElementById('yearSelector').value = year;
+
+            const firstDayOfMonth = new Date(year, month, 1);
+            const lastDayOfMonth = new Date(year, month + 1, 0);
+
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayNames.forEach(day => {
+                const headerDay = document.createElement('div');
+                headerDay.className = 'calendar-day calendar-header-day';
+                headerDay.innerText = day;
+                calendarGrid.appendChild(headerDay);
+            });
+
+            const firstDayOfWeek = firstDayOfMonth.getDay();
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day empty';
+                calendarGrid.appendChild(emptyDay);
+            }
+
+            let tempDate = new Date(firstDayOfMonth);
+            const today = toYYYYMMDD(new Date());
+
+            while (tempDate <= lastDayOfMonth) {
+                const dateString = toYYYYMMDD(tempDate);
+                const day = tempDate.getDate();
+                
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day';
+                dayDiv.setAttribute('data-date', dateString);
+                
+                let dayContent = document.createElement('span');
+                dayContent.innerText = day;
+
+                if (records[selectedCustomerForAdd] && records[selectedCustomerForAdd][dateString] !== undefined) {
+                    dayDiv.classList.add('has-record');
+                    const consumption = records[selectedCustomerForAdd][dateString];
+                    dayContent.innerHTML += `<br><small>${consumption} L</small>`;
+                }
+
+                dayDiv.appendChild(dayContent);
+
+                if (selectedDates.has(dateString)) {
+                    dayDiv.classList.add('selected');
+                }
+                
+                dayDiv.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    isDragging = true;
+                    dragStartDay = dateString;
+                    toggleDateSelection(dateString, e);
+                });
+                
+                dayDiv.addEventListener('mouseenter', (e) => {
+                    if (isDragging) {
+                        handleDragSelection(dragStartDay, dateString);
+                    }
+                });
+
+                dayDiv.addEventListener('mouseup', () => {
+                    isDragging = false;
+                });
+                
+                calendarGrid.appendChild(dayDiv);
+                tempDate.setDate(tempDate.getDate() + 1);
+            }
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        }
+        
+        function toggleDateSelection(dateString, e) {
+            const dayDiv = e.target.closest('.calendar-day');
+            if (!dayDiv || dayDiv.classList.contains('empty') || dayDiv.classList.contains('calendar-header-day')) {
+                return;
+            }
+
+            if (selectedDates.has(dateString)) {
+                selectedDates.delete(dateString);
+                dayDiv.classList.remove('selected');
+            } else {
+                selectedDates.add(dateString);
+                dayDiv.classList.add('selected');
+            }
+        }
+        
+        function handleDragSelection(startDateString, endDateString) {
+            const startDate = new Date(startDateString);
+            const endDate = new Date(endDateString);
+            
+            const days = document.querySelectorAll('.calendar-day');
+            
+            days.forEach(dayDiv => {
+                const dateString = dayDiv.getAttribute('data-date');
+                if (dateString) {
+                    const dayDate = new Date(dateString);
+                    if ((dayDate >= startDate && dayDate <= endDate) || (dayDate <= startDate && dayDate >= endDate)) {
+                        if (!selectedDates.has(dateString)) {
+                            selectedDates.add(dateString);
+                            dayDiv.classList.add('selected');
+                        }
+                    } else if (selectedDates.has(dateString)) {
+                        // This logic is a bit more complex. For simplicity, we just add, not remove.
+                        // A more advanced version would deselect outside the range.
+                    }
+                }
+            });
+        }
+        
+        function changeCalendarMonth(offset) {
+             currentCalendarDate.setMonth(currentCalendarDate.getMonth() + offset);
+             renderCalendar();
+        }
+        
+        function selectAllDates() {
+            selectedDates.clear();
+            const dayDivs = document.querySelectorAll('#calendarGrid .calendar-day');
+            dayDivs.forEach(dayDiv => {
+                const dateString = dayDiv.getAttribute('data-date');
+                if (dateString) {
+                    selectedDates.add(dateString);
+                    dayDiv.classList.add('selected');
+                }
+            });
+        }
+        
+        function deselectAllDates() {
+             selectedDates.clear();
+             const dayDivs = document.querySelectorAll('#calendarGrid .calendar-day');
+             dayDivs.forEach(dayDiv => {
+                 dayDiv.classList.remove('selected');
+             });
+        }
+
+        // --- Core Functions ---
+        function toggleQuantityInput() {
+            const unit = document.getElementById('unit').value;
+            const quantityInputContainer = document.getElementById('quantityInputContainer');
+            if (unit === 'litre') {
+                quantityInputContainer.style.display = 'block';
+                document.getElementById('quantity').value = '1';
+            } else {
+                quantityInputContainer.style.display = 'none';
+            }
+        }
+        
+        function clearFormInputs() {
+            document.getElementById('customer').value = '';
+            const today = new Date();
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            document.getElementById('startDate').value = toYYYYMMDD(firstDayOfMonth);
+            document.getElementById('endDate').value = toYYYYMMDD(lastDayOfMonth);
+            document.getElementById('unit').value = '500ml';
+            document.getElementById('quantity').value = '0.5';
+            toggleQuantityInput();
+            showToast('All input fields cleared!');
+        }
+
+        function addRecord() {
+            const customer = document.getElementById('customer').value.trim();
+            const startDateInput = document.getElementById('startDate').value;
+            const endDateInput = document.getElementById('endDate').value;
+            const unit = document.getElementById('unit').value;
+            const quantityInput = document.getElementById('quantity').value;
+
+            if (!customer || !startDateInput || !endDateInput) {
+                showToast('Please fill in all required fields.', 5000);
+                return;
+            }
+
+            const startDate = new Date(startDateInput);
+            const endDate = new Date(endDateInput);
+
+            if (startDate > endDate) {
+                showToast('End Date must be the same as or after Start Date.', 5000);
+                return;
+            }
+            
+            startDate.setMinutes(startDate.getMinutes() + startDate.getTimezoneOffset());
+            endDate.setMinutes(endDate.getMinutes() + endDate.getTimezoneOffset());
+
+            let quantityInLitres = getUnitQuantity(unit, 'quantity');
+
+            if (unit === 'litre') {
+                const parsedQuantity = parseFloat(quantityInput);
+                if (isNaN(parsedQuantity) || parsedQuantity < 0) {
+                    showToast('Please enter a valid quantity.', 5000);
+                    return;
+                }
+                quantityInLitres = parsedQuantity;
+            }
+
+            if (!records[customer]) {
+                records[customer] = {};
+            }
+
+            let currentDate = new Date(startDate);
+            let recordAdded = false;
+
+            while (currentDate <= endDate) {
+                const dateString = toYYYYMMDD(currentDate);
+                const currentQuantity = records[customer][dateString] || 0;
+
+                if (currentQuantity !== quantityInLitres) {
+                    records[customer][dateString] = quantityInLitres;
+                    recordAdded = true;
+                }
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+
+            if (recordAdded) {
+                 localStorage.setItem('milkFarmRecords', JSON.stringify(records));
+                 showToast('Record added successfully!');
+                 updateAutocompleteList();
+            } else {
+                 showToast('No new changes to existing records within the selected date range.');
+            }
+
+            clearFormInputs();
+        }
+
+        function showCustomerList() {
+            previousView = currentView;
+            currentView = 'customerList';
+            document.getElementById('inputForm').style.display = 'none';
+            document.getElementById('pricePerLitreContainer').style.display = 'none';
+            document.getElementById('homeScreenButtons').style.display = 'none';
+            displayCustomerList();
+            document.getElementById('backButton').style.display = 'block';
+            document.getElementById('mainHeader').innerText = 'Customer List';
+            hideAllBillElements();
+        }
+
+        function displayCustomerList() {
+            let customerHtml = `<h2>Registered Customers</h2>`;
+            const sortedCustomers = Object.keys(records).sort((a, b) => a.localeCompare(b));
+            if (sortedCustomers.length === 0) {
+                 customerHtml += `<p style="text-align: center; color: #777;">No customers added yet.</p>`;
+            } else {
+                for (let customer of sortedCustomers) {
+                    customerHtml += `<div class="monthly-bill" onclick="viewCustomerData('${encodeURIComponent(customer)}')">
+                                    <span class="monthly-bill-text">${customer}</span>
+                                    <button class="button-delete" onclick="event.stopPropagation(); confirmDeleteCustomer('${encodeURIComponent(customer)}')"><i class="fas fa-trash"></i> Delete</button>
+                                </div>`;
+                }
+            }
+            document.getElementById('customerRecords').innerHTML = customerHtml;
+            document.getElementById('customerRecords').style.display = 'block';
+        }
+
+        function viewCustomerData(customerEncoded) {
+            const customer = decodeURIComponent(customerEncoded);
+            previousView = currentView;
+            currentView = 'customerData';
+
+            const customerData = records[customer];
+            let monthHtml = `<h2>Monthly Bills for ${customer}</h2>`;
+            const monthYears = {};
+
+            for (const date in customerData) {
+                 if (customerData.hasOwnProperty(date)) {
+                     const dateObj = new Date(date);
+                     // Adjust for timezone offset to ensure correct date interpretation
+                     dateObj.setMinutes(dateObj.getMinutes() + dateObj.getTimezoneOffset());
+                     
+                     if (!isNaN(dateObj.getTime())) {
+                         const monthYear = dateObj.toLocaleString('default', {
+                             month: 'numeric',
+                             year: 'numeric'
+                         });
+                         if (!monthYears[monthYear]) {
+                             monthYears[monthYear] = [];
+                         }
+                         monthYears[monthYear].push(date);
+                     } else {
+                         console.warn(`Invalid date found for customer ${customer}: ${date}. Skipping.`);
+                     }
+                 }
+            }
+
+            const sortedMonthYears = Object.keys(monthYears).sort((a, b) => {
+                const [monthA, yearA] = a.split('/').map(Number);
+                const [monthB, yearB] = b.split('/').map(Number);
+                if (yearA !== yearB) return yearB - yearA;
+                return monthB - monthA;
+            });
+
+            if (sortedMonthYears.length === 0) {
+                 monthHtml += `<p style="text-align: center; color: #777;">No bill records for this customer.</p>`;
+            } else {
+                for (const monthYear of sortedMonthYears) {
+                    monthHtml += `<div class="monthly-bill" onclick="viewMonthlyData('${encodeURIComponent(customer)}', '${encodeURIComponent(monthYear)}')">
+                                    <span class="monthly-bill-text">${monthYear}</span>
+                                    <button class="button-delete" onclick="event.stopPropagation(); confirmDeleteSingleMonth('${encodeURIComponent(customer)}', '${encodeURIComponent(monthYear)}')"><i class="fas fa-trash"></i> Delete</button>
+                                </div>`;
+                }
+            }
+
+            document.getElementById('customerRecords').innerHTML = monthHtml;
+            document.getElementById('customerRecords').style.display = 'block';
+            document.getElementById('mainHeader').innerText = `Bills for ${customer}`;
+            hideAllBillElements();
+        }
+
+        function viewMonthlyData(customerEncoded, monthYearEncoded) {
+            const customer = decodeURIComponent(customerEncoded);
+            const monthYear = decodeURIComponent(monthYearEncoded);
+
+            currentView = 'billSummary';
+            currentCustomer = customer;
+            currentMonthYear = monthYear;
+
+            const customerData = records[customer] || {};
+            let monthlyHtml = `<div id="billContentInner"><h3>Bill Summary for ${monthYear} - ${customer}:</h3>`;
+            let totalBill = 0;
+
+            monthlyHtml += `<div class="calendar-grid">`;
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayNames.forEach(day => {
+                monthlyHtml += `<div class="calendar-day calendar-header-day">${day}</div>`;
+            });
+
+            const monthParts = monthYear.split('/');
+            const month = parseInt(monthParts[0], 10) - 1;
+            const year = parseInt(monthParts[1], 10);
+            const firstDayOfMonth = new Date(year, month, 1);
+            const lastDayOfMonth = new Date(year, month + 1, 0);
+
+            const firstDayOfWeek = firstDayOfMonth.getDay();
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                monthlyHtml += `<div class="calendar-day"></div>`;
+            }
+
+            let tempDate = new Date(firstDayOfMonth);
+            while(tempDate <= lastDayOfMonth) {
+                const dateString = toYYYYMMDD(tempDate);
+                const consumption = customerData[dateString] || 0;
+                const dailyCost = consumption * pricePerLitre;
+                totalBill += dailyCost;
+
+                const day = tempDate.getDate();
+                let dayClass = '';
+                if (consumption > 0) {
+                    dayClass = 'has-milk';
+                } else if (consumption === 0) {
+                    dayClass = 'no-milk';
+                }
+                
+                monthlyHtml += `<div class="calendar-day ${dayClass}">
+                                    ${day}
+                                    <span class="calendar-day-amount">₹${dailyCost.toFixed(2)}<br>(${consumption} L)</span>
+                                </div>`;
+                tempDate.setDate(tempDate.getDate() + 1);
+            }
+
+            monthlyHtml += `</div>`;
+            monthlyHtml += `<hr><p style="text-align: right; font-weight: 700;">Subtotal: ₹<span id="subtotalDisplay">${totalBill.toFixed(2)}</span></p></div>`;
+
+            document.getElementById('billContent').innerHTML = monthlyHtml;
+            document.getElementById('totalAmountPayable').innerText = totalBill.toFixed(2);
+            document.getElementById('dueLastMonth').value = '0';
+
+            document.getElementById('actionButtons').style.display = 'flex';
+            document.getElementById('dueLastMonthContainer').style.display = 'block';
+            document.getElementById('billImageContainer').style.display = 'none';
+
+            document.getElementById('billContainer').style.display = 'block';
+            document.getElementById('customerRecords').style.display = 'none';
+            document.getElementById('mainHeader').innerText = `Bill Summary for ${monthYear}`;
+            document.getElementById('backButton').style.display = 'block';
+        }
+
+        function updateTotalBill() {
+            const subtotal = parseFloat(document.getElementById('subtotalDisplay').innerText) || 0;
+            const dueLastMonthInput = document.getElementById('dueLastMonth');
+            const dueLastMonth = parseFloat(dueLastMonthInput.value) || 0;
+
+            const totalAmountPayable = subtotal + dueLastMonth;
+            document.getElementById('totalAmountPayable').innerText = totalAmountPayable.toFixed(2);
+        }
+
+
+        function goBack() {
+            if (currentView === 'billSummary') {
+                currentView = 'customerData';
+                viewCustomerData(encodeURIComponent(currentCustomer));
+                hideAllBillElements();
+                document.getElementById('backButton').style.display = 'block';
+                document.getElementById('customerRecords').style.display = 'block';
+            } else if (currentView === 'customerData') {
+                currentView = 'customerList';
+                displayCustomerList();
+                document.getElementById('mainHeader').innerText = 'Customer List';
+                hideAllBillElements();
+                document.getElementById('backButton').style.display = 'block';
+                document.getElementById('customerRecords').style.display = 'block';
+            } else if (currentView === 'customerList') {
+                currentView = 'home';
+                document.getElementById('inputForm').style.display = 'block';
+                document.getElementById('customerRecords').style.display = 'none';
+                document.getElementById('billContainer').style.display = 'none';
+                document.getElementById('backButton').style.display = 'none';
+                document.getElementById('mainHeader').innerText = 'Milk Farm Monthly Bill Calculator';
+                document.getElementById('mainHeader').style.display = 'block';
+                hideAllBillElements();
+                document.getElementById('homeScreenButtons').style.display = 'flex';
+            } else if (currentView === 'billImage') {
+                currentView = 'billSummary';
+                document.getElementById('billImageContainer').style.display = 'none';
+                document.getElementById('billContainer').style.display = 'block';
+                document.getElementById('actionButtons').style.display = 'flex';
+                document.getElementById('dueLastMonthContainer').style.display = 'block';
+                document.getElementById('mainHeader').innerText = `Bill Summary for ${currentMonthYear}`;
+                document.getElementById('mainHeader').style.display = 'block';
+                document.getElementById('backButton').style.display = 'block';
+            }
+        }
+
+        function confirmDeleteCustomer(customerEncoded) {
+            const customer = decodeURIComponent(customerEncoded);
+            showCustomAlert(
+                'Confirm Deletion',
+                `Are you sure you want to delete ALL records for ${customer}? This action cannot be undone.`,
+                (confirmed) => {
+                    if (confirmed) {
+                        const now = new Date().getTime();
+                        // Store the entire customer's data as a single deleted item
+                        deletedRecords[customer] = {
+                            data: records[customer],
+                            timestamp: now,
+                            type: 'customer',
+                            id: customer // Use customer name as ID for easy lookup
+                        };
+                        localStorage.setItem('milkFarmDeletedRecords', JSON.stringify(deletedRecords));
+
+                        delete records[customer];
+                        localStorage.setItem('milkFarmRecords', JSON.stringify(records));
+                        
+                        showToast(`All records for ${customer} deleted successfully! It can be recovered for 30 days.`);
+                        updateAutocompleteList();
+                        displayCustomerList();
+                    }
+                }
+            );
+        }
+
+        function confirmDeleteSingleMonth(customerEncoded, monthYearEncoded) {
+            const customer = decodeURIComponent(customerEncoded);
+            const monthYear = decodeURIComponent(monthYearEncoded);
+            showCustomAlert(
+                'Confirm Deletion',
+                `Are you sure you want to delete all records for ${monthYear} for ${customer}? This action cannot be undone.`,
+                (confirmed) => {
+                    if (confirmed) {
+                        deleteSingleMonth(customer, monthYear);
+                    }
+                }
+            );
+        }
+
+        function deleteSingleMonth(customer, monthYear) {
+            const customerData = records[customer];
+            let monthDataFound = false;
+            const monthDataToDelete = {};
+
+            const monthParts = monthYear.split('/');
+            const targetMonth = parseInt(monthParts[0], 10) - 1; // 0-indexed month
+            const targetYear = parseInt(monthParts[1], 10);
+
+            // Iterate over the customer's records to find relevant dates
+            for (const dateString in customerData) {
+                 if (customerData.hasOwnProperty(dateString)) {
+                    const dateObj = new Date(dateString);
+                    // Adjust for timezone offset to ensure correct date interpretation
+                    dateObj.setMinutes(dateObj.getMinutes() + dateObj.getTimezoneOffset());
+                    
+                    if (!isNaN(dateObj.getTime())) {
+                        if (dateObj.getMonth() === targetMonth && dateObj.getFullYear() === targetYear) {
+                            monthDataFound = true;
+                            monthDataToDelete[dateString] = customerData[dateString];
+                            delete customerData[dateString]; // Remove from active records
+                        }
+                    }
+                 }
+            }
+
+            if (monthDataFound) {
+                // Store deleted month's data
+                const now = new Date().getTime();
+                const deletedItemId = `${customer}_${monthYear}`; // Unique ID for month deletion
+
+                deletedRecords[deletedItemId] = {
+                    data: monthDataToDelete,
+                    timestamp: now,
+                    type: 'month',
+                    customer: customer,
+                    monthYear: monthYear,
+                    id: deletedItemId
+                };
+                localStorage.setItem('milkFarmDeletedRecords', JSON.stringify(deletedRecords));
+
+                // If customer has no more records, remove customer entirely
+                if (Object.keys(customerData).length === 0) {
+                    delete records[customer];
+                }
+
+                localStorage.setItem('milkFarmRecords', JSON.stringify(records));
+                showToast(`Data for ${monthYear} deleted successfully for ${customer}! It can be recovered for 30 days.`);
+                updateAutocompleteList();
+                viewCustomerData(encodeURIComponent(customer));
+            } else {
+                 showToast(`No data found for ${monthYear} to delete.`);
+            }
+        }
+
+        function confirmDeleteCurrentMonth() {
+            const customer = currentCustomer;
+            const monthYear = currentMonthYear;
+
+             if (!customer || !monthYear) {
+                 showToast("Error: Cannot delete month. Customer or month/year not selected.");
+                 return;
+             }
+
+            showCustomAlert(
+                'Confirm Deletion',
+                `Are you sure you want to delete ALL records for ${monthYear} for ${customer}? This action cannot be undone.`,
+                (confirmed) => {
+                    if (confirmed) {
+                        deleteSingleMonth(customer, monthYear);
+                        goBack();
+                    }
+                }
+            );
+        }
+
+        function showSaveBillModal() {
+            document.getElementById('saveBillModalOverlay').classList.add('show');
+        }
+
+        function hideSaveBillModal() {
+            document.getElementById('saveBillModalOverlay').classList.remove('show');
+        }
+
+        document.getElementById('saveBillModalOverlay').addEventListener('click', (event) => {
+            if (event.target === document.getElementById('saveBillModalOverlay')) {
+                hideSaveBillModal();
+            }
+        });
+
+        // Function to convert data to CSV format
+        function convertToCSV(data) {
+            let csvContent = "Date,Quantity (Litres),Cost (₹)\n";
+            const sortedDates = Object.keys(data).sort();
+            for (const date of sortedDates) {
+                const quantity = data[date];
+                const cost = (quantity * pricePerLitre).toFixed(2);
+                csvContent += `${date},${quantity},${cost}\n`;
+            }
+            return csvContent;
+        }
+
+        // Updated saveFile function to use Blob for download
+        async function saveFile(format) {
+            hideSaveBillModal();
+            let defaultFileName = `milk_bill_${currentCustomer}_${currentMonthYear.replace('/', '-')}`;
+            let fileExtension = '';
+            let mimeType = '';
+            let blob;
+
+            if (format === 'image') {
+                fileExtension = 'png';
+                mimeType = 'image/png';
+                const billContainer = document.getElementById('billContainer');
+                
+                const actionButtonsBeforeCapture = document.getElementById('actionButtons').style.display;
+                const dueLastMonthContainerBeforeCapture = document.getElementById('dueLastMonthContainer').style.display;
+                document.getElementById('actionButtons').style.display = 'none';
+                document.getElementById('dueLastMonthContainer').style.display = 'block'; 
+                document.getElementById('mainHeader').style.display = 'none'; 
+                document.getElementById('backButton').style.display = 'none';
+
+                showToast('Generating bill image...', 2000); 
+
+                try {
+                    const canvas = await html2canvas(billContainer, { 
+                        scale: 3, 
+                        useCORS: true 
+                    });
+                    blob = await new Promise(resolve => canvas.toBlob(resolve, mimeType));
+                    showToast('Bill image generated!', 1500);
+                } catch (error) {
+                    console.error("Error generating bill image:", error);
+                    showToast('Failed to generate bill image.');
+                    return; // Stop execution on error
+                } finally {
+                    document.getElementById('actionButtons').style.display = actionButtonsBeforeCapture;
+                    document.getElementById('dueLastMonthContainer').style.display = dueLastMonthContainerBeforeCapture;
+                    document.getElementById('mainHeader').style.display = 'block';
+                    document.getElementById('backButton').style.display = 'block';
+                }
+
+            } else if (format === 'json') {
+                fileExtension = 'json';
+                mimeType = 'application/json';
+                const data = records[currentCustomer];
+                const jsonContent = JSON.stringify(data, null, 2);
+                blob = new Blob([jsonContent], { type: mimeType });
+                showToast('Bill data prepared as JSON!', 1500);
+            } else if (format === 'csv') {
+                fileExtension = 'csv';
+                mimeType = 'text/csv';
+                const data = records[currentCustomer];
+                const csvContent = convertToCSV(data); 
+                blob = new Blob([csvContent], { type: mimeType });
+                showToast('Bill data prepared as CSV!', 1500);
+            } else {
+                showToast('Invalid file format selected.');
+                return;
+            }
+
+            if (!blob) {
+                showToast('File content could not be generated.');
+                return;
+            }
+
+            const fileName = prompt(`Enter filename (e.g., ${defaultFileName}):`, defaultFileName);
+            if (fileName === null) { 
+                showToast('File save cancelled.');
+                return;
+            }
+            const finalFileName = `${fileName}.${fileExtension}`;
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = finalFileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url); // Clean up the object URL
+            showToast(`${finalFileName} saved to your Downloads!`);
+        }
+
+
+        function shareBill() {
+            const billContainer = document.getElementById('billContainer');
+            const actionButtonsBeforeCapture = document.getElementById('actionButtons').style.display;
+            const dueLastMonthContainerBeforeCapture = document.getElementById('dueLastMonthContainer').style.display;
+            const mainHeaderBeforeCapture = document.getElementById('mainHeader').style.display;
+            const backButtonBeforeCapture = document.getElementById('backButton').style.display;
+
+            document.getElementById('actionButtons').style.display = 'none';
+            document.getElementById('dueLastMonthContainer').style.display = 'block'; 
+            document.getElementById('mainHeader').style.display = 'none';
+            document.getElementById('backButton').style.display = 'none';
+
+            billContainer.style.display = 'block'; 
+            showToast('Preparing bill for sharing...', 2000);
+
+            html2canvas(billContainer, { 
+                scale: 3,
+                useCORS: true
+            }).then(async (canvas) => {
+                document.getElementById('actionButtons').style.display = actionButtonsBeforeCapture;
+                document.getElementById('dueLastMonthContainer').style.display = dueLastMonthContainerBeforeCapture;
+                document.getElementById('mainHeader').style.display = mainHeaderBeforeCapture;
+                document.getElementById('backButton').style.display = backButtonBeforeCapture;
+                if (currentView === 'billImage') {
+                    document.getElementById('billContainer').style.display = 'none';
+                }
+
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        showToast('Failed to generate image for sharing.');
+                        return;
+                    }
+                    const fileName = `milk_bill_${currentCustomer}_${currentMonthYear.replace('/', '-')}.png`;
+                    const file = new File([blob], fileName, { type: 'image/png' });
+                    if (navigator.share && navigator.canShare({ files: [file] })) {
+                        try {
+                            await navigator.share({
+                                files: [file],
+                                title: `Milk Bill for ${currentCustomer} - ${currentMonthYear}`,
+                                text: `Here is your milk bill from the Milk Farm for ${currentMonthYear}.`
+                            });
+                            console.log('Bill shared successfully');
+                        } catch (error) {
+                            console.error('Error sharing bill:', error);
+                            showToast('Sharing failed or cancelled.');
+                        }
+                    } else {
+                        showToast('Web Share API with files not supported in this browser. You can save the bill instead.', 4000);
+                    }
+                }, 'image/png');
+            }).catch(error => {
+                console.error("Error sharing bill:", error);
+                showToast('Failed to prepare bill for sharing.');
+                document.getElementById('actionButtons').style.display = actionButtonsBeforeCapture;
+                document.getElementById('dueLastMonthContainer').style.display = dueLastMonthContainerBeforeCapture;
+                document.getElementById('mainHeader').style.display = mainHeaderBeforeCapture;
+                document.getElementById('backButton').style.display = backButtonBeforeCapture;
+                 if (currentView === 'billImage') {
+                    document.getElementById('billContainer').style.display = 'none';
+                }
+            });
+        }
+
+        let tapTimeout;
+        let tapCount = 0;
+        function handleImageTap() {
+            tapCount++;
+            if (tapCount === 1) {
+                tapTimeout = setTimeout(() => {
+                    tapCount = 0;
+                }, 300);
+            } else if (tapCount === 2) {
+                clearTimeout(tapTimeout);
+                goBack();
+                tapCount = 0;
+            }
+        }
+
+        function viewBillImage() {
+            const billContainer = document.getElementById('billContainer');
+            const billImageContainer = document.getElementById('billImageContainer');
+            const mainHeader = document.getElementById('mainHeader');
+            const dueLastMonthContainer = document.getElementById('dueLastMonthContainer');
+
+            const actionButtonsBeforeCapture = document.getElementById('actionButtons').style.display;
+            const mainHeaderBeforeCapture = mainHeader.style.display;
+            const backButtonBeforeCapture = document.getElementById('backButton').style.display;
+
+            document.getElementById('actionButtons').style.display = 'none';
+            mainHeader.style.display = 'none';
+            document.getElementById('backButton').style.display = 'none';
+
+            billContainer.style.display = 'block'; 
+            dueLastMonthContainer.style.display = 'block';
+
+            showToast('Generating image preview...', 2000);
+
+            html2canvas(billContainer, { 
+                scale: 3, 
+                useCORS: true
+            }).then((canvas) => {
+                const img = new Image();
+                img.src = canvas.toDataURL("image/png");
+                img.alt = `Milk Bill for ${currentCustomer} - ${currentMonthYear}`;
+
+                img.style.maxWidth = '90%'; 
+                img.style.maxHeight = '90vh'; 
+                img.style.objectFit = 'contain';
+
+                billImageContainer.innerHTML = '';
+                billImageContainer.appendChild(img);
+
+                billImageContainer.style.position = 'fixed';
+                billImageContainer.style.top = '0';
+                billImageContainer.style.left = '0';
+                billImageContainer.style.width = '100%';
+                billImageContainer.style.height = '100%';
+                billImageContainer.style.backgroundColor = 'rgba(240, 240, 240, 0.95)';
+                billImageContainer.style.zIndex = '999';
+                billImageContainer.style.display = 'flex';
+                billImageContainer.style.justifyContent = 'center';
+                billImageContainer.style.alignItems = 'center';
+
+                billContainer.style.display = 'none';
+
+                img.addEventListener('click', handleImageTap);
+                currentView = 'billImage';
+
+            }).catch(error => {
+                console.error("Error viewing bill image:", error);
+                showToast('Failed to generate image preview.');
+                billContainer.style.display = 'block';
+                document.getElementById('actionButtons').style.display = actionButtonsBeforeCapture;
+                dueLastMonthContainer.style.display = 'block';
+                mainHeader.style.display = mainHeaderBeforeCapture;
+                document.getElementById('backButton').style.display = backButtonBeforeCapture;
+                billImageContainer.style.display = 'none';
+            });
+        }
+        
+        // --- NEW: Multi-Customer Add Logic ---
+        let selectedMultiCustomers = new Set();
+        
+        function showMultiCustomerAddModal() {
+            hideModal('customerSelectorModal');
+            document.getElementById('multiCustomerAddModalOverlay').classList.add('show');
+            populateMultiCustomerList();
+            
+            const today = new Date();
+            const todayString = toYYYYMMDD(today);
+            document.getElementById('quickAddStartDate').value = todayString;
+            document.getElementById('quickAddEndDate').value = todayString;
+            
+            document.querySelectorAll('#multiCustomerAddModal .quantity-option-button').forEach(btn => {
+                btn.classList.remove('selected');
+                if (btn.dataset.unit === '500ml') {
+                     btn.classList.add('selected');
+                }
+            });
+            document.getElementById('quantityInputForMultiAdd').style.display = 'none';
+            selectedUnitForAdd = '500ml';
+            
+        }
+
+        function populateMultiCustomerList() {
+            const listContainer = document.getElementById('multiCustomerListContainer');
+            listContainer.innerHTML = '';
+            
+            const customerNames = Object.keys(records).sort();
+            
+            if (customerNames.length === 0) {
+                 listContainer.innerHTML = `<p style="text-align: center; color: #777; padding: 20px;">No customers found.</p>`;
+                 return;
+            }
+            
+            customerNames.forEach(customer => {
+                const item = document.createElement('div');
+                item.className = 'multi-customer-item';
+                item.innerText = customer;
+                if (selectedMultiCustomers.has(customer)) {
+                    item.classList.add('selected');
+                }
+                item.addEventListener('click', () => {
+                    item.classList.toggle('selected');
+                    if (item.classList.contains('selected')) {
+                        selectedMultiCustomers.add(item.innerText);
+                    } else {
+                        selectedMultiCustomers.delete(item.innerText);
+                    }
+                });
+                listContainer.appendChild(item);
+            });
+        }
+        
+        function toggleAllCustomers(select) {
+            const items = document.querySelectorAll('#multiCustomerListContainer .multi-customer-item');
+            items.forEach(item => {
+                if (select) {
+                    item.classList.add('selected');
+                    selectedMultiCustomers.add(item.innerText);
+                } else {
+                    item.classList.remove('selected');
+                    selectedMultiCustomers.delete(item.innerText);
+                }
+            });
+        }
+        
+        document.querySelectorAll('#multiCustomerAddModal .quantity-option-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                document.querySelectorAll('#multiCustomerAddModal .quantity-option-button').forEach(btn => btn.classList.remove('selected'));
+                e.target.classList.add('selected');
+                selectedUnitForAdd = e.target.getAttribute('data-unit');
+                if (selectedUnitForAdd === 'litre') {
+                    document.getElementById('quantityInputForMultiAdd').style.display = 'flex';
+                } else {
+                    document.getElementById('quantityInputForMultiAdd').style.display = 'none';
+                }
+            });
+        });
+        
+        function addMultiCustomerBills() {
+            if (selectedMultiCustomers.size === 0) {
+                 showToast('Please select at least one customer!');
+                 return;
+            }
+            
+            const startDateInput = document.getElementById('quickAddStartDate').value;
+            const endDateInput = document.getElementById('quickAddEndDate').value;
+            if (!startDateInput || !endDateInput) {
+                 showToast('Please select a valid date range!');
+                 return;
+            }
+            
+            const startDate = new Date(startDateInput);
+            const endDate = new Date(endDateInput);
+
+            if (startDate > endDate) {
+                 showToast('End Date must be the same as or after Start Date.', 5000);
+                 return;
+            }
+
+            const quantityInLitres = getUnitQuantity(selectedUnitForAdd, 'multiAddQuantityInput');
+            let totalRecordsAdded = 0;
+
+            selectedMultiCustomers.forEach(customer => {
+                 if (!records[customer]) {
+                     records[customer] = {};
+                 }
+                 let currentDate = new Date(startDate);
+                 while (currentDate <= endDate) {
+                     const dateString = toYYYYMMDD(currentDate);
+                     records[customer][dateString] = quantityInLitres;
+                     totalRecordsAdded++;
+                     currentDate.setDate(currentDate.getDate() + 1);
+                 }
+            });
+            
+            localStorage.setItem('milkFarmRecords', JSON.stringify(records));
+            showToast(`${totalRecordsAdded} records added successfully for ${selectedMultiCustomers.size} customers!`);
+            
+            hideModal('multiCustomerAddModal');
+            selectedMultiCustomers.clear();
+        }
+        
+        // --- NEW: Recover Deleted Items Logic ---
+        function showRecoverDeletedModal() {
+            document.getElementById('recoverDeletedModalOverlay').classList.add('show');
+            updateRecoverableList();
+        }
+        
+        function updateRecoverableList() {
+            const listContainer = document.getElementById('recoverableItemsList');
+            listContainer.innerHTML = '';
+            
+            const now = new Date().getTime();
+            const thirtyDaysAgo = now - (30 * 24 * 60 * 60 * 1000);
+            let itemsFound = false;
+
+            // Filter out items older than 30 days and create a new object
+            const filteredDeletedRecords = {};
+            for (const id in deletedRecords) {
+                if (deletedRecords.hasOwnProperty(id)) {
+                    const item = deletedRecords[id];
+                    if (item.timestamp >= thirtyDaysAgo) {
+                        filteredDeletedRecords[id] = item;
+                    }
+                }
+            }
+            deletedRecords = filteredDeletedRecords; // Update the global deletedRecords object
+
+            const sortedItemIds = Object.keys(deletedRecords).sort((a, b) => {
+                return deletedRecords[b].timestamp - deletedRecords[a].timestamp; // Sort by most recent first
+            });
+
+            for (const id of sortedItemIds) {
+                itemsFound = true;
+                const item = deletedRecords[id];
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'modal-list-item';
+                let displayText = '';
+
+                if (item.type === 'customer') {
+                    displayText = `<strong>${item.id}</strong> (All Records)`;
+                } else if (item.type === 'month') {
+                    displayText = `<strong>${item.customer}</strong> - ${item.monthYear}`;
+                }
+
+                itemDiv.innerHTML = `<span>${displayText} (${toDDMMYYYYFromTimestamp(item.timestamp)})</span>`;
+                
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'modal-list-item-buttons';
+                
+                const recoverButton = document.createElement('button');
+                recoverButton.className = 'recover-button';
+                recoverButton.innerText = 'Recover';
+                recoverButton.onclick = () => recoverItem(id); // Pass the unique ID
+                
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'delete-perm-button';
+                deleteButton.innerText = 'Delete';
+                deleteButton.onclick = () => permanentlyDeleteItem(id); // Pass the unique ID
+                
+                buttonContainer.appendChild(recoverButton);
+                buttonContainer.appendChild(deleteButton);
+                itemDiv.appendChild(buttonContainer);
+                listContainer.appendChild(itemDiv);
+            }
+
+            localStorage.setItem('milkFarmDeletedRecords', JSON.stringify(deletedRecords));
+
+            if (!itemsFound) {
+                 listContainer.innerHTML = `<p style="text-align: center; color: #777;">No recoverable items found.</p>`;
+            }
+        }
+        
+        function recoverItem(idToRecover) {
+            const item = deletedRecords[idToRecover];
+            if (item) {
+                 if (item.type === 'customer') {
+                     // Recovering an entire customer
+                     records[item.id] = item.data;
+                 } else if (item.type === 'month') {
+                     // Recovering a specific month for a customer
+                     if (!records[item.customer]) {
+                         records[item.customer] = {};
+                     }
+                     Object.assign(records[item.customer], item.data);
+                 }
+                 
+                 delete deletedRecords[idToRecover]; // Remove from deleted records
+                 localStorage.setItem('milkFarmRecords', JSON.stringify(records));
+                 localStorage.setItem('milkFarmDeletedRecords', JSON.stringify(deletedRecords));
+                 
+                 showToast(`Record for ${item.id || item.customer} recovered successfully!`);
+                 updateRecoverableList();
+                 updateAutocompleteList();
+            }
+        }
+        
+        function permanentlyDeleteItem(idToDelete) {
+             delete deletedRecords[idToDelete];
+             localStorage.setItem('milkFarmDeletedRecords', JSON.stringify(deletedRecords));
+             showToast(`Record permanently deleted.`);
+             updateRecoverableList();
+        }
+        
+        function recoverAllDeletedItems() {
+             for (const id in deletedRecords) {
+                 if (deletedRecords.hasOwnProperty(id)) {
+                     const item = deletedRecords[id];
+                     if (item.type === 'customer') {
+                         records[item.id] = item.data;
+                     } else if (item.type === 'month') {
+                         if (!records[item.customer]) {
+                             records[item.customer] = {};
+                         }
+                         Object.assign(records[item.customer], item.data);
+                     }
+                 }
+             }
+             
+             localStorage.setItem('milkFarmRecords', JSON.stringify(records));
+             deletedRecords = {}; // Clear all deleted records
+             localStorage.setItem('milkFarmDeletedRecords', JSON.stringify(deletedRecords));
+             
+             showToast('All recoverable records have been restored!');
+             updateRecoverableList();
+             updateAutocompleteList();
+             hideModal('recoverDeletedModal');
+        }
+        
+        function clearRecoverable() {
+            deletedRecords = {};
+            localStorage.setItem('milkFarmDeletedRecords', JSON.stringify(deletedRecords));
+            showToast('All recoverable items permanently deleted.');
+            updateRecoverableList();
+            document.getElementById('deleteConfirmOverlay').classList.remove('show');
+            hideModal('recoverDeletedModal');
+        }
+
+        function setupAutocomplete(inputElement, arr) {
+            let currentFocus;
+            
+            closeAllLists();
+
+            inputElement.addEventListener("input", function(e) {
+                let a, b, i, val = this.value;
+                closeAllLists();
+                currentFocus = -1;
+                if (!val && !this.classList.contains('focused')) { return false; } 
+
+                a = document.createElement("div");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                this.parentNode.parentNode.appendChild(a);
+
+                const filteredArr = arr.filter(name => name.toUpperCase().includes(val.toUpperCase()));
+
+                for (i = 0; i < filteredArr.length; i++) {
+                    b = document.createElement("div");
+                    const matchIndex = filteredArr[i].toUpperCase().indexOf(val.toUpperCase());
+                    if (matchIndex !== -1) {
+                        b.innerHTML = filteredArr[i].substr(0, matchIndex) + 
+                                      "<strong>" + filteredArr[i].substr(matchIndex, val.length) + "</strong>" +
+                                      filteredArr[i].substr(matchIndex + val.length);
+                    } else {
+                        b.innerHTML = filteredArr[i];
+                    }
+                    b.innerHTML += "<input type='hidden' value='" + filteredArr[i] + "'>";
+                    b.addEventListener("click", function(e) {
+                        inputElement.value = this.getElementsByTagName("input")[0].value;
+                        closeAllLists();
+                        inputElement.focus();
+                    });
+                    a.appendChild(b);
+                }
+            });
+
+            inputElement.addEventListener("focus", function() {
+                this.classList.add('focused');
+                const event = new Event('input', { bubbles: true });
+                this.dispatchEvent(event);
+            });
+
+            inputElement.addEventListener("blur", function() {
+                setTimeout(() => {
+                    closeAllLists();
+                    this.classList.remove('focused');
+                }, 150); 
+            });
+
+            inputElement.addEventListener("keydown", function(e) {
+                let x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) {
+                    currentFocus++;
+                    addActive(x);
+                } else if (e.keyCode == 38) {
+                    currentFocus--;
+                    addActive(x);
+                } else if (e.keyCode == 13) {
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        if (x) x[currentFocus].click();
+                    } else {
+                        if (x && x.length > 0) {
+                            x[0].click();
+                        }
+                    }
+                }
+            });
+
+            function addActive(x) {
+                if (!x) return false;
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                x[currentFocus].classList.add("autocomplete-active");
+                if (x[currentFocus].scrollIntoView) {
+                    x[currentFocus].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
+
+            function removeActive(x) {
+                for (let i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+
+            function closeAllLists(elmnt) {
+                let x = document.getElementsByClassName("autocomplete-items");
+                for (let i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != inputElement) { 
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+        }
+
+        function updateAutocompleteList() {
+            const customerNames = Object.keys(records).sort();
+            setupAutocomplete(document.getElementById('customer'), customerNames);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('customerRecords').style.display = 'none';
+            document.getElementById('backButton').style.display = 'none';
+            hideAllBillElements();
+            document.getElementById('unit').value = '500ml';
+            toggleQuantityInput();
+            updateAutocompleteList();
+
+            const today = new Date();
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            document.getElementById('startDate').value = toYYYYMMDD(firstDayOfMonth);
+            document.getElementById('endDate').value = toYYYYMMDD(lastDayOfMonth);
+
+            document.getElementById('homeScreenButtons').style.display = 'flex';
+            document.getElementById('inputForm').style.display = 'block';
+            
+            populateMonthYearSelectors();
+            renderCalendar();
+        });
+    </script>
+</body>
+</html>
