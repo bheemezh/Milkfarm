@@ -1,5 +1,17 @@
 {
   "display_override": [
     "window-controls-overlay"
-  ]
+  ],
+  "start_url": "https://bheemezh.github.io/Milkfarm/",
+  "dir": "ltr",
+  "name": "Milk bill",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "short_name": "Milk",
+  "id": "630540",
+  "description": "It's good app nothing big",
+  "scope": "https://bheemezh.github.io/Milkfarm/",
+  "lang": "en",
+  "orientation": "portrait",
+  "display": "fullscreen"
 }
